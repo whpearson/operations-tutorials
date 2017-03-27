@@ -1,18 +1,22 @@
+While trying to wrangle computers to do your bidding there are a number of concepts that are universal to all operating systems. Knowing these concepts and the tools that let you inspect their state on the operating system level can give you more insight into when things inevitably go wrong. A good one for networking code is the idea of ports. You have used a port to view this web page, although you may not have known it. If you have pulled down information from an API you used a port.  Having done the tutorial you will have some idea of the following:
 
+* Debugging network code you have written
+* Finding out what network traffic is currently happening on your computer
+* Important background knowledge when talking about things like firewalls or docker containers
 
-Ports are an important part of networking on all platforms. They allow computers to communicate to multiple different other computers at once, without talking over each other. This tutorial will allow show you how to interact with them on the command line, this can help you with debugging systems both on your computer and in production.
+Ports are an important part of networking on all platforms. They allow computers to communicate to multiple different other computers at once, without talking over each other. 
 
-To communicate with a computer you need two things a name or number and a port. The familiar www.google.com is an example of a name and http as a standard talks over port 80 (or port 443 for https) so you do not have to specify it. You can think of a port as an extension number for phone number in an office. Every networking program has to specify which port it is listening to or talking to.
+To communicate with a computer you need two things a name or number and a port. The familiar www.google.com is an example of a name and http as a standard talks over port 80 (or port 443 for https). This standard means you do not have to specify it when using many tools. You can think of a port as an extension number for a phone number in an office. Every networking program has to specify which port it is listening to or talking to. A networking program that is listening on a port is sometimes called a listening service.
 
 This tutorial assumes that you are on MacOSX, I'll translate it to Windows and Linux as time allows.
 
 ## Talking to yourself
 
-Let us start with a listening service. nc is a swiss army knife of a networking tool, it allows you to listen, talk and also forward messages. Nc is short for netcat, which is not much more illuminating to its purpose. To make it listen on a port 8080 type
+Let us start with a program that listens on a port and displays it to the screen. nc is a swiss army knife of a networking tool, it allows you to listen, talk and also forward messages. Nc is short for netcat, which is not much more illuminating to it's purpose. To make it listen on a port 8080 type
 
 nc -l 8080 
 
-The -l parameter means listen, so it just sits there waiting for something to talk to. Lets talk to it using telnet a useful command for talking out, interactively. Localhost is a special name for your own computer. Open up another command line window and type.
+The -l parameter means listen, so it just sits there waiting for something to talk to it. Lets talk to it using telnet. telnet a useful command for talking out to a specific host and port. Localhost is a special name for your own computer. So to talk to nc, open up another command line window and type.
 
 telnet localhost 8080
 
@@ -23,7 +27,7 @@ Type in either command line window and once you hit return you should see the te
 
 ## Talking http
 
-Quit out of telnet (^ means ctrl so 'Escape character is ^]' means ctrl + ] will get you out of the connection and then type quit to get your out of telnet entirely). Now to get a flavour of http we will use another useful tool called curl. It can down load web pages and tell you detailed debugging information about what is going on.
+Quit out of telnet (^ means ctrl so 'Escape character is ^]' means ctrl + ] will get you out of the connection and then type quit to get your out of telnet entirely). Now to get a flavour of http we will use another useful tool called curl. It can download web pages and tell you detailed debugging information about what is going on.
 
 Type:
 
@@ -42,11 +46,11 @@ You can see that it is curl that is connecting by the user agent. Let us see if 
 
 telnet www.google.com 
 
-Copy and paste the first line of the request made by curl "GET /" to your telnet window. Type another return character as well. You should get a response like
+Copy and paste the first line of the request made by curl "GET /" to your telnet window. Type another return character as well, so it knows the request is finished. You should get a response like
 
 "HTTP/1.1 302 Found"
 
-You have managed to fool google into thinking you know how to speak http. If you want to actually learn to speak HTTP you can look up the verbs and the status codes in the rfc's. ***TODO ADD LINKS***
+You have managed to fool google into thinking you know how to speak http. If you want to actually learn to speak HTTP you can look up the [verbs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and the [status codes](https://tools.ietf.org/html/rfc7231#section-6) in the RFCs. RFCs are requests for comments and how various networking protocols get defined. They are not the prettiest things in the world, but are the source for how things should (but don't necessarily) work.
 
 ## Exploring your computers chatter
 
@@ -54,7 +58,7 @@ Your computer is continually talking to lots of other computers and listening fo
 
 telnet localhost 8080 
 
-again
+again to set up the connection.
 
 Now run 
 
@@ -88,8 +92,8 @@ tcpdump -A --interface lo0 port  8080
 
 With the -A parameter it tries to print out the contents of the communications.  The --interface command tells it which network interface to use (imagine you had physical and a wifi network device, each would have a seperate interface), in this case it is lo0 which is the loopback interface, which is where localhost lives.
 
-Start typing in both the nc and the telnet windows and you should be able to see the content of those messages in the tcpdump window. There is lots of other extraneous detail as well. You do not have to understand all of it.
+Start typing in either the nc or the telnet windows and you should be able to see the content of those messages in the tcpdump window. There is lots of other extraneous detail as well, you do not have to understand all of it.
 
-Tcpdump has a complex query language so you can select only certain connections to spy on. That is what the port 8080 means. You can specify the destination address with "dest <the_address>" Try tcpdumping some of the established connections you saw in netstat to see what their chatter looks like. HTTPS traffic is unitelligible because it is encrypted. HTTP traffic is more easily intercepted and anyone on the way to a foreign server can run a tcpdump and find out what is going on. 
+Tcpdump has a complex query language so you can select only certain connections to spy on. That is what the port 8080 means. You can specify the destination address with "dest <the_address>" Try tcpdump-ing some of the established connections you saw in netstat to see what their chatter looks like. HTTPS traffic is unitelligible because it is encrypted. HTTP traffic is more easily intercepted and anyone on the way to a server can run a tcpdump and find out what is going on. A tutorial for tcpdump can be found [here](https://danielmiessler.com/study/tcpdump/#gs.9bGSpcI).
 
 
