@@ -48,7 +48,7 @@ Copy and paste the first line of the request made by curl "GET /" to your telnet
 
 You have managed to fool google into thinking you know how to speak http. If you want to actually learn to speak HTTP you can look up the verbs and the status codes in the rfc's. ***TODO ADD LINKS***
 
-##Exploring your computers chatter
+## Exploring your computers chatter
 
 Your computer is continually talking to lots of other computers and listening for other computers trying to talk to it. Sometimes you need to find out what is going on.
 
@@ -80,7 +80,7 @@ This shows you both side of your telnet/nc connection and that outgoing connecti
 You will probably see lots of other connections open. These will be web browsers connected to servers and other things your computer is doing. Have a look at this [port listing](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) and try and figure out what is going on.  You can also run netstat without the -n parameter to get the names of the servers it is talking to with the names of the ports.
 
 
-##Tcpdump 
+## Tcpdump 
 
 One last very powerful tool is tcpdump. It allows you to see what is going inside a connection without disturbing it. Make sure nc and telnet are still running and in a third window run:
 
@@ -88,8 +88,8 @@ tcpdump -A --interface lo0 port  8080
 
 With the -A parameter it tries to print out the contents of the communications.  The --interface command tells it which network interface to use (imagine you had physical and a wifi network device, each would have a seperate interface), in this case it is lo0 which is the loopback interface, which is where localhost lives.
 
-Start typing in both the nc and the telnet windows and you should be able to see the content of those messages in the tcpdump window.
+Start typing in both the nc and the telnet windows and you should be able to see the content of those messages in the tcpdump window. There is lots of other extraneous detail as well. You do not have to understand all of it.
 
-Tcpdump has a complex query language so you can select only certain connections to spy on. That is what the port 8080 means. You can specify the destination address with "dest <the address>" Try tcpdumping some of the established connections you saw in netstat to see what their chatter looks like. HTTPS traffic is unitelligible because it is encrypted. HTTP traffic is more easily intercepted and anyone on the way to a foreign server can run a tcpdump and find out what is going on. 
+Tcpdump has a complex query language so you can select only certain connections to spy on. That is what the port 8080 means. You can specify the destination address with "dest <the_address>" Try tcpdumping some of the established connections you saw in netstat to see what their chatter looks like. HTTPS traffic is unitelligible because it is encrypted. HTTP traffic is more easily intercepted and anyone on the way to a foreign server can run a tcpdump and find out what is going on. 
 
 
