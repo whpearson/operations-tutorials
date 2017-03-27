@@ -33,10 +33,10 @@ You need to specify the port after the name with a colon else it will try and ta
 
 In the nc window you should see something like.
 
-<code>GET / HTTP/1.1
+<pre>GET / HTTP/1.1
 Host: localhost:8080
 User-Agent: curl/7.43.0
-Accept: */*</code>
+Accept: */*</pre>
 
 You can see that it is curl that is connecting by the user agent. Let us see if we can fool google into thinking we are a web browser. 
 
@@ -64,12 +64,12 @@ This gets you connections in the inet family (which is the standard internet fam
 
 You should see an entries for
 
-<code>
+<pre>
 Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)
 -------------------------------
 tcp4       0      0  127.0.0.1.8080         127.0.0.1.XXXXX        ESTABLISHED
 tcp4       0      0  127.0.0.1.XXXXX        127.0.0.1.8080         ESTABLISHED
-</code>
+</pre>
 
 Where XXXXX is high number.
 
